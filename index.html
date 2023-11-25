@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Building Blocks Project</title>
+  <style>
+    canvas {
+      border: 1px solid #000;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="blockCanvas" width="600" height="400"></canvas>
+  <script>
+    class Block {
+      constructor(x, y, width, height, color) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.color = color;
+      }
+
+      draw(context) {
+        context.fillStyle = this.color;
+        context.fillRect(this.x, this.y, this.width, this.height);
+      }
+    }
+
+    const canvas = document.getElementById('blockCanvas');
+    const context = canvas.getContext('2d');
+    const blocks = [];
+
+    canvas.addEventListener('mousedown', handleMouseDown);
+
+    function handleMouseDown(event) {
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = event.clientX - rect.left;
+      const mouseY = event.clientY - rect.top;
+
+      const blockWidth = 50;
+      const blockHeight = 30;
+      const blockColor = getRandomColor();
+
+      const newBlock = new Block(mouseX, mouseY, blockWidth, blockHeight, blockColor);
+      blocks.push(newBlock);
+
+      drawBlocks();
+    }
+
+    function drawBlocks() {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+      blocks.forEach(block => {
+        block.draw(context);
+      });
+    }
+
+    function getRandomColor() {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+  </script>
+</body>
+
+</html>
